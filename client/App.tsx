@@ -15,6 +15,7 @@ import CategoryView from "./pages/CategoryView";
 import WordMatching from "./pages/WordMatching";
 import WordSearch from "./pages/WordSearch";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ export default function App() {
           <HeaderProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route
                 path="/"
                 element={

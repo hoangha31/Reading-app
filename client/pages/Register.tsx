@@ -1,26 +1,43 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useState } from "react";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
+  const [passwords, setPasswords] = useState({ password: "", confirm: "" });
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    if (passwords.password !== passwords.confirm) {
+      setPasswordsMatch(false);
+      return;
+    }
+    // Handle registration logic here
   };
 
-  const handleGoogleLogin = () => {
-    // Handle Google login logic here
+  const handlePasswordChange = (
+    field: "password" | "confirm",
+    value: string,
+  ) => {
+    const newPasswords = { ...passwords, [field]: value };
+    setPasswords(newPasswords);
+    if (field === "confirm" || (field === "password" && passwords.confirm)) {
+      setPasswordsMatch(newPasswords.password === newPasswords.confirm);
+    }
+  };
+
+  const handleGoogleSignup = () => {
+    // Handle Google signup logic here
   };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6 py-8">
       <div className="w-full max-w-lg">
-        {/* Login Card */}
+        {/* Registration Card */}
         <div className="bg-card rounded-3xl shadow-lg p-12">
           {/* Title */}
-          <h1 className="text-5xl font-bold text-foreground text-center mb-12">
-            Chào mừng trở lại!
+          <h1 className="text-4xl font-bold text-foreground text-center mb-12">
+            Đăng ký tài khoản mới
           </h1>
 
           {/* Form */}
@@ -35,6 +52,7 @@ export default function Login() {
                 placeholder="Nhập tên đăng nhập của bạn"
                 className="w-full bg-background rounded-3xl px-6 py-4 text-lg font-medium text-foreground placeholder-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 aria-label="Tên đăng nhập"
+                required
               />
             </div>
 
@@ -48,15 +66,45 @@ export default function Login() {
                 placeholder="Nhập mật khẩu của bạn"
                 className="w-full bg-background rounded-3xl px-6 py-4 text-lg font-medium text-foreground placeholder-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 aria-label="Mật khẩu"
+                value={passwords.password}
+                onChange={(e) =>
+                  handlePasswordChange("password", e.target.value)
+                }
+                required
               />
             </div>
 
-            {/* Login Button */}
+            {/* Confirm Password Input */}
+            <div>
+              <label className="block text-lg font-semibold text-foreground mb-3">
+                Nhập lại mật khẩu
+              </label>
+              <input
+                type="password"
+                placeholder="Nhập lại mật khẩu của bạn"
+                className={`w-full bg-background rounded-3xl px-6 py-4 text-lg font-medium text-foreground placeholder-muted-foreground border-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+                  !passwordsMatch ? "border-destructive" : "border-border"
+                }`}
+                aria-label="Nhập lại mật khẩu"
+                value={passwords.confirm}
+                onChange={(e) =>
+                  handlePasswordChange("confirm", e.target.value)
+                }
+                required
+              />
+              {!passwordsMatch && (
+                <p className="text-destructive text-sm font-medium mt-2">
+                  Mật khẩu không trùng khớp
+                </p>
+              )}
+            </div>
+
+            {/* Signup Button */}
             <button
               type="submit"
               className="w-full bg-primary text-primary-foreground rounded-3xl px-6 py-4 text-lg font-bold hover:opacity-90 transition-opacity mt-8"
             >
-              Đăng nhập
+              Đăng ký
             </button>
           </form>
 
@@ -69,10 +117,10 @@ export default function Login() {
             <div className="flex-1 border-t border-border"></div>
           </div>
 
-          {/* Google Login Button */}
+          {/* Google Signup Button */}
           <button
             type="button"
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleSignup}
             className="w-full bg-card border-2 border-border rounded-3xl px-6 py-4 text-lg font-bold text-foreground hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
           >
             <svg
@@ -94,27 +142,19 @@ export default function Login() {
                 fill="#EA4335"
               />
             </svg>
-            <span>Đăng nhập bằng Google</span>
+            <span>Đăng ký bằng Google</span>
           </button>
         </div>
 
-        {/* Bottom Links */}
-        <div className="text-center mt-8 space-y-4">
-          <Link
-            to="#"
-            className="block text-lg font-medium text-primary hover:opacity-80 transition-opacity"
+        {/* Back to Login Link */}
+        <div className="text-center mt-8">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-lg font-medium text-foreground hover:opacity-80 transition-opacity cursor-pointer bg-none border-none p-0"
           >
-            Quên mật khẩu?
-          </Link>
-          <div className="text-lg font-medium text-foreground">
-            Chưa có tài khoản?{" "}
-            <button
-              onClick={() => navigate("/register")}
-              className="text-primary font-bold hover:opacity-80 transition-opacity cursor-pointer bg-none border-none p-0"
-            >
-              Đăng ký
-            </button>
-          </div>
+            Đã có tài khoản?{" "}
+            <span className="text-primary font-bold">Đăng nhập</span>
+          </button>
         </div>
       </div>
     </div>
