@@ -20,7 +20,7 @@ export function TopHeader({
   const handleCheckIn = () => {
     setIsCheckedIn(true);
     onCheckIn?.();
-    streakCount =  treakCount + 1
+    streakCount = streakCount + 1
   };
 
   return (
