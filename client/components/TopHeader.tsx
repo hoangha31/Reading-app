@@ -20,7 +20,7 @@ export function TopHeader({
   const handleCheckIn = () => {
     setIsCheckedIn(true);
     onCheckIn?.();
-    streakCount += 1
+    streakCount =  treakCount + 1
   };
 
   return (
@@ -33,7 +33,7 @@ export function TopHeader({
 
           {/* Streak Badge */}
           
-          <StreakBadge count={streakCount + 1} />
+          <StreakBadge count={streakCount} />
 
           {/* Check-in Button */}
           <button
